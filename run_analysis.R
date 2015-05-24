@@ -14,9 +14,9 @@ dtActivityTraining <- fread(file.path(pathIn, "train", "Y_train.txt"))
 dtActivityTest  <- fread(file.path(pathIn, "test" , "Y_test.txt" ))
 
 fileToDataTable <- function (f) {
-+     df <- read.table(f)
-+     dt <- data.table(df)
-+ }
+     df <- read.table(f)
+     dt <- data.table(df)
+}
 
 # Merges the training and the test sets to create one data set.
 
@@ -57,8 +57,8 @@ dt <- merge(dt, dtFeatures[, list(featureNum, featureCode, featureName)], by="fe
 dt$activity <- factor(dt$activityName)
 dt$feature <- factor(dt$featureName)
 grepthis <- function (regex) {
-+     grepl(regex, dt$feature)
-+ }
+     grepl(regex, dt$feature)
+}
 
 cat <- 2
 y <- matrix(seq(1, cat), nrow=n)
