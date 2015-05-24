@@ -5,7 +5,6 @@ path <- getwd()
 pathIn <- file.path(path, "UCI HAR Dataset")
 
 url <- "http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-if (!file.exists(path)) {dir.create(path)}
 download.file(url, file.path(path, f)) 
 
 dtSubjectTraining <- fread(file.path(pathIn, "train", "subject_train.txt"))
