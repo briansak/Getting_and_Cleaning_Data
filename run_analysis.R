@@ -5,7 +5,8 @@ path <- getwd()
 pathIn <- file.path(path, "UCI HAR Dataset")
 
 url <- "http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-download.file(url, file.path(path, f)) 
+f <- file.path(getwd(), "UCI%20HAR%20Dataset.zip")
+download.file(url, f) 
 
 dtSubjectTraining <- fread(file.path(pathIn, "train", "subject_train.txt"))
 dtSubjectTest  <- fread(file.path(pathIn, "test" , "subject_test.txt" ))
@@ -27,7 +28,7 @@ setnames(dtSubject, "V1", "subject")
 dtActivity <- rbind(dtActivityTraining, dtActivityTest)
 setnames(dtActivity, "V1", "activityNum")
 
-dt <- rbind(dtTrain, dtTest)
+dt <- rbind(dtTraining, dtTest)
 dtSubject <- cbind(dtSubject, dtActivity)
 dt <- cbind(dtSubject, dt)
 
@@ -59,7 +60,7 @@ grepthis <- function (regex) {
      grepl(regex, dt$feature)
 }
 
-cat <- 2
+n <- 2
 y <- matrix(seq(1, cat), nrow=n)
 x <- matrix(c(grepthis("^t"), grepthis("^f")), ncol=nrow(y))
 dt$featDom <- factor(x %*% y, labels=c("Time", "Freq"))
@@ -71,7 +72,7 @@ x <- matrix(c(grepthis("mean()"), grepthis("std()")), ncol=nrow(y))
 dt$featVar <- factor(x %*% y, labels=c("Mean", "SD"))
 dt$featJerk <- factor(grepthis("Jerk"), labels=c(NA, "Jerk"))
 dt$featMag <- factor(grepthis("Mag"), labels=c(NA, "Magnitude"))
-cat <- 3
+n <- 3
 y <- matrix(seq(1, n), nrow=n)
 x <- matrix(c(grepthis("-X"), grepthis("-Y"), grepthis("-Z")), ncol=nrow(y))
 dt$featAxis <- factor(x %*% y, labels=c(NA, "X", "Y", "Z"))
@@ -83,5 +84,5 @@ dtTidy <- dt[, list(count = .N, average = mean(value)), by=key(dt)]
 
 # Write the File
 
-f <- file.path(path, "DatasetHumanActivityRecognitionUsingSmartphones.txt")
+f <- file.path(path, "SmartphoneActivityData.txt")
 write.table(dtTidy, f, quote=FALSE, sep="\t", row.names=FALSE)
